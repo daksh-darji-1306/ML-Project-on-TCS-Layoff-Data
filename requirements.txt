@@ -1,7 +1,4 @@
-streamlit>=1.18.0
-scikit-learn>=1.0
-pandas
+streamlit
+scikit-learn
 numpy
 joblib
-boto3         # optional if using S3
-requests      # optional if downloading model via HTTP
