@@ -32,12 +32,6 @@ with st.form("prediction_form"):
         format_func=lambda x: "Yes" if x == 1 else "No"
     )
 
-    location_asia = st.selectbox(
-        "Location - Asia-Pacific",
-        options=[0, 1],
-        format_func=lambda x: "Yes" if x == 1 else "No"
-    )
-
     location_europe = st.selectbox(
         "Location - Europe",
         options=[0, 1],
@@ -70,7 +64,6 @@ if submitted:
     input_data = pd.DataFrame([[
         job_level_middle,
         department_others,
-        location_asia,
         location_europe,
         location_others,
         billable_days,
@@ -78,7 +71,6 @@ if submitted:
     ]], columns=[
         'job_level_Middle',
         'department_Others',
-        'location_Asia-Pacific',
         'location_Europe',
         'location_Others',
         'billable_days',
