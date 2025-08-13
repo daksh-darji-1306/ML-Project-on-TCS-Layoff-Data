@@ -101,6 +101,9 @@ input_aligned = input_processed.reindex(columns=model_columns, fill_value=0)
 
 
 # --- Make Prediction ---
+# **FIX:** Convert all columns to a consistent float type to prevent dtype errors
+input_aligned = input_aligned.astype(float)
+
 prediction = model.predict(input_aligned)
 
 
