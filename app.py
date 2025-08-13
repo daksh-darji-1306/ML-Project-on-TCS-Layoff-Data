@@ -2,23 +2,19 @@ import streamlit as st
 import pandas as pd
 import joblib
 
-# --- Load Model and Define Columns ---
-# Load the trained model. Ensure 'model.joblib' is in the same directory.
+# --- Load Model and Columns from a Single File ---
+# This approach is more robust as the model and its required columns are stored together.
 try:
-    model = joblib.load('model.joblib')
+    model_data = joblib.load('model.joblib')
+    model = model_data['model']
+    model_columns = model_data['columns']
 except FileNotFoundError:
-    st.error("Error: `model.joblib` not found. Please ensure the trained model file is in the correct directory.")
+    st.error("Error: `model.joblib` not found. Please run the training script to create it.")
+    st.stop()
+except KeyError:
+    st.error("Error: `model.joblib` is in an old format. Please re-run the updated training script.")
     st.stop()
 
-# Define the exact feature columns the model was trained on.
-# This list MUST match the features used for training your model.
-model_columns = [
-    'age', 'years_of_experience', 'billable_days', 'bench_time_days',
-    'performance_rating', 'training_hours', 'project_utilization',
-    'redeployment_attempts', 'redeployment_success', 'job_level_Middle',
-    'job_level_Senior', 'department_Software Development', 'department_Testing',
-    'location_North America', 'salary_band_Low'
-]
 
 # Load the raw dataset to get unique values for dropdowns
 try:
@@ -101,9 +97,7 @@ input_aligned = input_processed.reindex(columns=model_columns, fill_value=0)
 
 
 # --- Make Prediction ---
-# **FIX:** Convert all columns to a consistent float type to prevent dtype errors
-input_aligned = input_aligned.astype(float)
-
+# The model now receives data with guaranteed correct columns and order
 prediction = model.predict(input_aligned)
 
 
